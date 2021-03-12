@@ -1,17 +1,32 @@
+//save button
+let saveButton = $(".btn");
+
 //use moment to display current date at the top
 let timeStamp = $("#currentDay");
 timeStamp.text(moment().format("dddd, MMMM Do, YYYY"));
 
-//hourly timeblocks
-
 //timeblocks are color coded
-//let timeColor = $(".timeblock");
+let timeColor = $(".timeblock");
 var getTime = (moment().format("H"));
 
-//text in textboxes
-let textEl = $(".planner");
-let saveButton = $(".btn");
+console.log(getTime);
 
+function colorCode () {
+    for (let id=8; id<18; id++) {
+        let colorBlock = $("#" + id).children(".planner").text(localStorage.getItem(id));
+        if (id == getTime) {
+            colorBlock.addClass("present")
+        }
+        else if (id < getTime) {
+            colorBlock.addClass("past")
+        }
+        else if (id > getTime) {
+            colorBlock.addClass("future")
+        }
+    }
+}
+
+colorCode();
 
 //events saved to local storage
 function saveEvent(event) {
@@ -22,17 +37,14 @@ function saveEvent(event) {
     var timeSlot = $(event.target).parent().attr("id");
     console.log(timeSlot);
     localStorage.setItem(timeSlot, eventInput.val());
-    }
+}
 
-function retrieveEvents () {
-    for(var i=8; i<=17; i++ ) {
-        $("#" + i).children(".planner").text(localStorage.getItem(i));
-    }}
+// function retrieveEvents () {
+//     for(var i = 8; i <= 17; i++) {
+//         $("#" + i).children(".planner").text(localStorage.getItem(i))//.addClass(className);
+//     }
+// }
 
-retrieveEvents();
-
+// retrieveEvents();
 
 saveButton.on("click", saveEvent)
-
-//events displayed from local storage
-//for loop?
